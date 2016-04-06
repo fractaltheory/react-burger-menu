@@ -298,21 +298,21 @@ exports['default'] = function (styles) {
         },
         applyWrapperStyles: function applyWrapperStyles() {
             if (styles.pageWrap && this.props.pageWrapId) {
-                this.handleExternalWrapper(this.props.pageWrapId, styles.pageWrap, true);
+                this.handleExternalWrapper('pageWrap', this.props.pageWrapId, styles.pageWrap, true);
             }
             if (styles.outerContainer && this.props.outerContainerId) {
-                this.handleExternalWrapper(this.props.outerContainerId, styles.outerContainer, true);
+                this.handleExternalWrapper('outerContainer', this.props.outerContainerId, styles.outerContainer, true);
             }
         },
         clearWrapperStyles: function clearWrapperStyles() {
             if (styles.pageWrap && this.props.pageWrapId) {
-                this.handleExternalWrapper(this.props.pageWrapId, styles.pageWrap, false);
+                this.handleExternalWrapper('pageWrap', this.props.pageWrapId, styles.pageWrap, false);
             }
             if (styles.outerContainer && this.props.outerContainerId) {
-                this.handleExternalWrapper(this.props.outerContainerId, styles.outerContainer, false);
+                this.handleExternalWrapper('outerContainer', this.props.outerContainerId, styles.outerContainer, false);
             }
         },
-        handleExternalWrapper: function handleExternalWrapper(id, wrapperStyles, set) {
+        handleExternalWrapper: function handleExternalWrapper(el, id, wrapperStyles, set) {
             var html = document.querySelector('html');
             var body = document.querySelector('body');
             var wrapper = document.getElementById(id);
@@ -321,6 +321,14 @@ exports['default'] = function (styles) {
                 return;
             }
             wrapperStyles = wrapperStyles(this.state.isOpen, this.props.width, this.props.right);
+            var customStyles = this.getStyles(el);
+            customStyles.forEach(function (styles) {
+                for (var prop in styles) {
+                    if (styles.hasOwnProperty(prop)) {
+                        wrapperStyles[prop] = styles[prop];
+                    }
+                }
+            });
             for (var prop in wrapperStyles) {
                 if (wrapperStyles.hasOwnProperty(prop)) {
                     wrapper.style[prop] = set ? wrapperStyles[prop] : '';
