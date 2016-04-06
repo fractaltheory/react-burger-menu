@@ -393,7 +393,7 @@ exports['default'] = function (styles) {
                     var snap = undefined;
                     try {
                         snap = function () {
-                            throw new Error('Cannot find module \'imports?this=>window,fix=>module.exports=0!snapsvg/dist/snap.svg.js\' from \'/Users/imogen/code/react-burger-menu/src\'');
+                            throw new Error('Cannot find module \'imports?this=>window,fix=>module.exports=0!snapsvg/dist/snap.svg.js\' from \'/Users/michael/Documents/git/react-burger-menu/src\'');
                         }();
                     } catch (e) {
                         snap = typeof window !== 'undefined' ? window['Snap'] : typeof global !== 'undefined' ? global['Snap'] : null;
@@ -412,7 +412,7 @@ exports['default'] = function (styles) {
             }
         },
         componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-            if (typeof nextProps.isOpen === 'boolean') {
+            if (typeof nextProps.isOpen === 'boolean' && nextProps.isOpen !== this.props.isOpen) {
                 this.toggleMenu(nextProps.isOpen);
             }
         },
