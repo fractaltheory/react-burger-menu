@@ -37,22 +37,22 @@ export default (styles) => {
     // Applies component-specific styles to external wrapper elements.
     applyWrapperStyles() {
       if (styles.pageWrap && this.props.pageWrapId) {
-        this.handleExternalWrapper(this.props.pageWrapId, styles.pageWrap, true);
+        this.handleExternalWrapper('pageWrap', this.props.pageWrapId, styles.pageWrap, true);
       }
 
       if (styles.outerContainer && this.props.outerContainerId) {
-        this.handleExternalWrapper(this.props.outerContainerId, styles.outerContainer, true);
+        this.handleExternalWrapper('outerContainer', this.props.outerContainerId, styles.outerContainer, true);
       }
     },
 
     // Removes component-specific styles applied to external wrapper elements.
     clearWrapperStyles() {
       if (styles.pageWrap && this.props.pageWrapId) {
-        this.handleExternalWrapper(this.props.pageWrapId, styles.pageWrap, false);
+        this.handleExternalWrapper('pageWrap', this.props.pageWrapId, styles.pageWrap, false);
       }
 
       if (styles.outerContainer && this.props.outerContainerId) {
-        this.handleExternalWrapper(this.props.outerContainerId, styles.outerContainer, false);
+        this.handleExternalWrapper('outerContainer', this.props.outerContainerId, styles.outerContainer, false);
       }
     },
 
@@ -60,7 +60,7 @@ export default (styles) => {
     // This is necessary for correct page interaction with some of the menus.
     // Throws and returns if the required external elements don't exist,
     // which means any external page animations won't be applied.
-    handleExternalWrapper(id, wrapperStyles, set) {
+    handleExternalWrapper(el, id, wrapperStyles, set) {
       let html = document.querySelector('html');
       let body = document.querySelector('body');
       let wrapper = document.getElementById(id);
@@ -71,6 +71,16 @@ export default (styles) => {
       }
 
       wrapperStyles = wrapperStyles(this.state.isOpen, this.props.width, this.props.right);
+
+      let customStyles = this.getStyles(el);
+
+      customStyles.forEach((styles) => {
+        for (let prop in styles) {
+          if (styles.hasOwnProperty(prop)) {
+            wrapperStyles[prop] = styles[prop];
+          }
+        }
+      });
 
       for (let prop in wrapperStyles) {
         if (wrapperStyles.hasOwnProperty(prop)) {
@@ -187,7 +197,7 @@ export default (styles) => {
 
     componentWillReceiveProps(nextProps) {
       // Allow open state to be controlled by props.
-      if (typeof nextProps.isOpen === 'boolean') {
+      if (typeof nextProps.isOpen === 'boolean' && nextProps.isOpen !== this.props.isOpen) {
         this.toggleMenu(nextProps.isOpen);
       }
     },

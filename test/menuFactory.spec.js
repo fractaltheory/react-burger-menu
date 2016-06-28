@@ -309,8 +309,8 @@ describe('menuFactory', () => {
     it('calls handleExternalWrapper with the correct params', () => {
       const handleExternalWrapper = sinon.spy(component, 'handleExternalWrapper');
       component.applyWrapperStyles();
-      assert.ok(handleExternalWrapper.calledWithExactly('page-wrap', mockStyles.full.pageWrap, true));
-      assert.ok(handleExternalWrapper.calledWithExactly('outer-container', mockStyles.full.outerContainer, true));
+      assert.ok(handleExternalWrapper.calledWithExactly('pageWrap', 'page-wrap', mockStyles.full.pageWrap, true));
+      assert.ok(handleExternalWrapper.calledWithExactly('outerContainer', 'outer-container', mockStyles.full.outerContainer, true));
       component.handleExternalWrapper.restore();
     });
   });
@@ -330,8 +330,8 @@ describe('menuFactory', () => {
     it('calls handleExternalWrapper with the correct params', () => {
       const handleExternalWrapper = sinon.spy(component, 'handleExternalWrapper');
       component.clearWrapperStyles();
-      assert.ok(handleExternalWrapper.calledWithExactly('page-wrap', mockStyles.full.pageWrap, false));
-      assert.ok(handleExternalWrapper.calledWithExactly('outer-container', mockStyles.full.outerContainer, false));
+      assert.ok(handleExternalWrapper.calledWithExactly('pageWrap', 'page-wrap', mockStyles.full.pageWrap, false));
+      assert.ok(handleExternalWrapper.calledWithExactly('outerContainer', 'outer-container', mockStyles.full.outerContainer, false));
       component.handleExternalWrapper.restore();
     });
   });
@@ -349,14 +349,14 @@ describe('menuFactory', () => {
 
     it('errors with the correct message if no wrapper element found', () => {
       const error = sinon.stub(console, 'error');
-      component.handleExternalWrapper('page-wrap', mockStyles.full.pageWrap, true);
+      component.handleExternalWrapper('pageWrap', 'page-wrap', mockStyles.full.pageWrap, true);
       assert.ok(error.calledWith("Element with ID 'page-wrap' not found"));
       console.error.restore();
     });
 
     it('sets styles on external wrapper elements', () => {
       addWrapperElementsToDOM();
-      component.handleExternalWrapper('page-wrap', styles, true);
+      component.handleExternalWrapper('pageWrap', 'page-wrap', styles, true);
       let wrapperElement = document.getElementById('page-wrap');
       expect(wrapperElement.style.color).to.equal('red');
       expect(wrapperElement.style.position).to.equal('relative');
@@ -368,7 +368,7 @@ describe('menuFactory', () => {
       let wrapperElement = document.getElementById('page-wrap');
       wrapperElement.style.color = 'red';
       wrapperElement.style.position = 'relative';
-      component.handleExternalWrapper('page-wrap', styles, false);
+      component.handleExternalWrapper('pageWrap', 'page-wrap', styles, false);
       expect(wrapperElement.style.color).to.be.empty;
       expect(wrapperElement.style.position).to.be.empty;
       removeWrapperElementsFromDOM();
@@ -378,7 +378,7 @@ describe('menuFactory', () => {
       addWrapperElementsToDOM();
       let html = document.querySelector('html');
       let body = document.querySelector('body');
-      component.handleExternalWrapper('page-wrap', styles, true);
+      component.handleExternalWrapper('pageWrap', 'page-wrap', styles, true);
       expect(html.style['overflow-x']).to.equal('hidden');
       expect(body.style['overflow-x']).to.equal('hidden');
       removeWrapperElementsFromDOM();
@@ -388,7 +388,7 @@ describe('menuFactory', () => {
       addWrapperElementsToDOM();
       let html = document.querySelector('html');
       let body = document.querySelector('body');
-      component.handleExternalWrapper('page-wrap', styles, false);
+      component.handleExternalWrapper('pageWrap', 'page-wrap', styles, false);
       expect(html.style['overflow-x']).to.be.empty;
       expect(body.style['overflow-x']).to.be.empty;
       removeWrapperElementsFromDOM();
